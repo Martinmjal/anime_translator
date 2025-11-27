@@ -1,16 +1,75 @@
-# React + Vite
+# 🎌 Anime Translator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Anime Translator Screenshot](public/screenshot.png)
 
-Currently, two official plugins are available:
+> **Learn German while watching your favorite anime.**  
+> Paste captions, get instant word-by-word translations, and visualize vocabulary complexity.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+- **Word-for-Word Translation**: Hover over any word to see its translation in **English** or **Spanish**.
+- **Complexity Analysis**: Visualize word difficulty with color-coded highlights (Green/Yellow/Red).
+- **Smart Filtering**: Automatically ignores common function words (e.g., *die, und, mit*) to focus on vocabulary.
+- **Google Cloud Integration**: Powered by Google Cloud Translation API for accurate results.
+- **Premium UI**: Glassmorphism design with smooth animations and dark mode aesthetics.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+- **Frontend**: React + Vite
+- **Styling**: Vanilla CSS (Custom Glassmorphism Design)
+- **API**: Google Cloud Translation API
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v16 or higher)
+- A Google Cloud API Key with Cloud Translation API enabled.
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Martinmjal/anime_translator.git
+   cd anime_translator
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment**
+   Create a `.env` file in the root directory:
+   ```bash
+   cp .env.example .env
+   ```
+   Open `.env` and add your Google Cloud API Key:
+   ```env
+   VITE_GOOGLE_API_KEY=your_api_key_here
+   ```
+
+4. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+## 📖 Usage
+
+1. **Paste Captions**: Copy German subtitles from your video player and paste them into the text area.
+2. **Translate**: Click the **"Translate & Analyze"** button.
+3. **Learn**:
+   - **Hover** over words to see translations.
+   - **Toggle** "Show Word Complexity" to see difficulty levels.
+
+## 🧪 Testing
+
+To verify the API integration without the UI, run the included test script:
+
+```bash
+node test-api.mjs
+```
+
+## 📄 License
+
+This project is licensed under the MIT License.
