@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Word = ({ word, translation, complexity, showComplexity }) => {
+const Word = ({ word, translation, complexity, showComplexity, onAddToKnown }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     let complexityClass = '';
@@ -17,7 +17,18 @@ const Word = ({ word, translation, complexity, showComplexity }) => {
             {word}
             {isHovered && translation && (
                 <span className="tooltip">
-                    {translation}
+                    <div className="tooltip-translation">{translation}</div>
+                    {showComplexity && complexity !== 'ignored' && (
+                        <button
+                            className="known-btn"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onAddToKnown();
+                            }}
+                        >
+                            Mark as Known
+                        </button>
+                    )}
                 </span>
             )}
             {' '}

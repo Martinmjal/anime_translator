@@ -16,7 +16,22 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  // We no longer need the API key in the frontend state as the backend handles it.
+  // const apiKey = import.meta.env.VITE_GOOGLE_API_KEY; 
+
+  const handleAddToKnown = async (word) => {
+    try {
+      await fetch('http://localhost:8000/known-words', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ word })
+      });
+      // Update local state to reflect change immediately (optional, or refetch)
+      setComplexityMap(prev => ({ ...prev, [word]: 'ignored' }));
+    } catch (err) {
+      console.error("Failed to add known word:", err);
+    }
+  };
 
   const handleProcess = async () => {
     if (!captions.trim()) return;
@@ -30,7 +45,7 @@ function App() {
     try {
       // Parallel fetch: Translation + Complexity
       const [translations, complexities] = await Promise.all([
-        translateBatch(words, targetLanguage, apiKey),
+        translateBatch(words, targetLanguage), // No API key needed
         fetchComplexityBatch(words)
       ]);
 
@@ -77,6 +92,7 @@ function App() {
             translationMap={translationMap}
             complexityMap={complexityMap}
             showComplexity={showComplexity}
+            onWordClick={handleAddToKnown}
           />
         </section>
       </main>

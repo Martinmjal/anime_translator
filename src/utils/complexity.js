@@ -1,9 +1,9 @@
 /**
  * Logic to determine word complexity.
- * Fetches complexity from the backend API.
+ * Fetches complexity from the Python backend API.
  */
 
-const BACKEND_URL = 'http://localhost:3000/complexity';
+const BACKEND_URL = 'http://localhost:8000/complexity';
 
 // Cache to store complexity results to avoid repeated API calls
 const complexityCache = {};
@@ -45,10 +45,4 @@ export const fetchComplexityBatch = async (words) => {
     });
 
     return results;
-};
-
-// Synchronous fallback (deprecated, but kept for immediate render if needed)
-// Now we rely on the async fetch in App.jsx
-export const getWordComplexity = (word) => {
-    return complexityCache[word] || 'ignored';
 };

@@ -15,44 +15,85 @@
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React + Vite
-- **Styling**: Vanilla CSS (Custom Glassmorphism Design)
-- **API**: Google Cloud Translation API
+### Frontend
+- **React** (Vite)
+- **Vanilla CSS** (Glassmorphism Design)
+
+### Backend
+- **Python** (FastAPI)
+- **Spacy** (NLP & POS Tagging)
+- **Pyphen** (Syllable Counting)
+- **Google Cloud Translation API**
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-
-- Node.js (v16 or higher)
-- A Google Cloud API Key with Cloud Translation API enabled.
+- Node.js & npm
+- Python 3.8+
+- Google Cloud API Key
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Martinmjal/anime_translator.git
-   cd anime_translator
-   ```
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/yourusername/anime-translator.git
+    cd anime-translator
+    ```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+2.  **Frontend Setup**
+    ```bash
+    npm install
+    ```
 
-3. **Configure Environment**
-   Create a `.env` file in the root directory:
-   ```bash
-   cp .env.example .env
-   ```
-   Open `.env` and add your Google Cloud API Key:
-   ```env
-   VITE_GOOGLE_API_KEY=your_api_key_here
-   ```
+3.  **Backend Setup**
+    ```bash
+    # Create virtual environment
+    python3 -m venv backend/venv
+    source backend/venv/bin/activate
 
-4. **Start the development server**
-   ```bash
-   npm run dev
-   ```
+    # Install dependencies
+    pip install -r backend/requirements.txt
+    
+    # Download German language model
+    python -m spacy download de_core_news_sm
+    ```
+
+4.  **Environment Variables**
+    Create a `.env` file in the root directory:
+    ```env
+    VITE_GOOGLE_API_KEY=your_api_key_here
+    ```
+
+### Running the App
+
+1.  **Start the Backend**
+    ```bash
+    # From root directory
+    backend/venv/bin/python backend/main.py
+    ```
+    *Server runs on http://localhost:8000*
+
+2.  **Start the Frontend**
+    ```bash
+    # Open a new terminal
+    npm run dev
+    ```
+    *App runs on http://localhost:5173*
+
+---
+
+## 🌟 Features
+
+- **Real-time Translation:** Uses Google Cloud API for accurate translations.
+- **Smart Complexity Analysis:**
+    - <span style="color: #4ade80">**Green:**</span> Common words (Top 1000).
+    - <span style="color: #facc15">**Yellow:**</span> Less common words or abstract concepts.
+    - <span style="color: #ef4444">**Red:**</span> Rare words, long compounds, or complex syllables.
+    - **Ignored:** Function words (Articles, Prepositions, etc.) are automatically filtered to reduce noise.
+- **Known Words:** Click any word to mark it as "Known" and ignore it in future.
+- **Glassmorphism UI:** A premium, modern aesthetic.
 
 ## 📖 Usage
 
