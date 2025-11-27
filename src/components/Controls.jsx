@@ -1,8 +1,20 @@
 import React from 'react';
 
-const Controls = ({ targetLanguage, setTargetLanguage, showComplexity, setShowComplexity }) => {
+const Controls = ({ targetLanguage, setTargetLanguage, showComplexity, setShowComplexity, apiKey, setApiKey }) => {
     return (
         <div className="controls-container">
+            <div className="control-group">
+                <label htmlFor="api-key-input">API Key:</label>
+                <input
+                    id="api-key-input"
+                    type="password"
+                    value={apiKey}
+                    onChange={(e) => setApiKey(e.target.value)}
+                    placeholder="Enter Google Cloud API Key"
+                    className="api-key-input"
+                />
+            </div>
+
             <div className="control-group">
                 <label htmlFor="language-select">Target Language:</label>
                 <select

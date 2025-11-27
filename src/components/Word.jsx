@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { translateWord } from '../utils/translation';
 import { getWordComplexity } from '../utils/complexity';
 
-const Word = ({ word, targetLanguage, showComplexity }) => {
+const Word = ({ word, translation, showComplexity }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const complexity = getWordComplexity(word);
-    const translation = translateWord(word, targetLanguage);
 
     let complexityClass = '';
     if (showComplexity && complexity !== 'ignored') {
@@ -20,7 +18,7 @@ const Word = ({ word, targetLanguage, showComplexity }) => {
             onMouseLeave={() => setIsHovered(false)}
         >
             {word}
-            {isHovered && (
+            {isHovered && translation && (
                 <span className="tooltip">
                     {translation}
                 </span>
