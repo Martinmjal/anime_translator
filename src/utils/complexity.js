@@ -1,28 +1,54 @@
 /**
  * Logic to determine word complexity.
- * Ignores function words and categorizes others based on length/rarity.
+ * Fetches complexity from the backend API.
  */
 
-const IGNORED_WORDS = new Set([
-    "die", "der", "das", "und", "in", "zu", "den", "von", "mit", "sich", "des", "auf", "für", "ist", "im", "dem", "nicht", "ein", "eine", "einen", "einem", "einer", "als", "auch", "es", "an", "werden", "aus", "er", "hat", "dass", "sie", "nach", "wird", "bei", "eines", "oder", "um", "am", "sind", "noch", "wie", "einigen", "zum", "war", "haben", "nur", "oder", "aber", "vor", "zur", "bis", "mehr", "durch", "man", "sein", "wurde", "sei", "pro", "wenn", "kann", "diese", "über", "wir", "ich", "du", "ihr", "uns", "euch", "ihnen", "mein", "dein", "sein", "unser", "euer", "ihr", "ja", "nein", "doch", "mal", "nun", "also"
-]);
+const BACKEND_URL = 'http://localhost:3000/complexity';
 
+// Cache to store complexity results to avoid repeated API calls
+const complexityCache = {};
+
+export const fetchComplexityBatch = async (words) => {
+    if (!words || words.length === 0) return {};
+
+    const uniqueWords = [...new Set(words.filter(w => w.trim().length > 0))];
+
+    // Filter out words we already have in cache
+    const wordsToFetch = uniqueWords.filter(word => !complexityCache[word]);
+
+    if (wordsToFetch.length > 0) {
+        try {
+            const response = await fetch(BACKEND_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ words: wordsToFetch })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                // Update cache
+                Object.assign(complexityCache, data);
+            } else {
+                console.error("Failed to fetch complexity:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching complexity:", error);
+        }
+    }
+
+    // Return all requested complexities from cache
+    const results = {};
+    uniqueWords.forEach(word => {
+        results[word] = complexityCache[word] || 'red'; // Default to red on error
+    });
+
+    return results;
+};
+
+// Synchronous fallback (deprecated, but kept for immediate render if needed)
+// Now we rely on the async fetch in App.jsx
 export const getWordComplexity = (word) => {
-    if (!word) return 'ignored';
-
-    const cleanWord = word.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()?"']/g, "");
-
-    if (IGNORED_WORDS.has(cleanWord)) {
-        return 'ignored';
-    }
-
-    // Simple heuristic: length
-    // In a real app, this would use a frequency list
-    if (cleanWord.length <= 4) {
-        return 'simple'; // Green
-    } else if (cleanWord.length <= 8) {
-        return 'medium'; // Yellow
-    } else {
-        return 'complex'; // Red
-    }
+    return complexityCache[word] || 'ignored';
 };

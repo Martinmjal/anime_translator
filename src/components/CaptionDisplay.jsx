@@ -1,7 +1,7 @@
 import React from 'react';
 import Word from './Word';
 
-const CaptionDisplay = ({ text, translationMap, showComplexity }) => {
+const CaptionDisplay = ({ text, translationMap, complexityMap, showComplexity }) => {
     if (!text) return null;
 
     const words = text.split(/(\s+)/).filter(w => w.trim().length > 0);
@@ -13,6 +13,7 @@ const CaptionDisplay = ({ text, translationMap, showComplexity }) => {
                     key={index}
                     word={word}
                     translation={translationMap[word]}
+                    complexity={complexityMap ? complexityMap[word] : 'ignored'}
                     showComplexity={showComplexity}
                 />
             ))}

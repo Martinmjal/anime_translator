@@ -3,12 +3,14 @@ import CaptionInput from './components/CaptionInput';
 import CaptionDisplay from './components/CaptionDisplay';
 import Controls from './components/Controls';
 import { translateBatch } from './utils/translation';
+import { fetchComplexityBatch } from './utils/complexity';
 import './index.css';
 
 function App() {
   const [captions, setCaptions] = useState('');
   const [processedCaptions, setProcessedCaptions] = useState('');
   const [translationMap, setTranslationMap] = useState({});
+  const [complexityMap, setComplexityMap] = useState({});
   const [targetLanguage, setTargetLanguage] = useState('en');
   const [showComplexity, setShowComplexity] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -23,16 +25,20 @@ function App() {
     setError(null);
     setProcessedCaptions(captions);
 
-    // Split words for translation
-    // Simple split by whitespace, cleaning punctuation for lookup
     const words = captions.split(/(\s+)/).filter(w => w.trim().length > 0);
 
     try {
-      const translations = await translateBatch(words, targetLanguage, apiKey);
+      // Parallel fetch: Translation + Complexity
+      const [translations, complexities] = await Promise.all([
+        translateBatch(words, targetLanguage, apiKey),
+        fetchComplexityBatch(words)
+      ]);
+
       setTranslationMap(translations);
+      setComplexityMap(complexities);
     } catch (err) {
       console.error(err);
-      setError(err.message || "Failed to translate. Check API Key.");
+      setError(err.message || "Failed to process text.");
     } finally {
       setIsLoading(false);
     }
@@ -69,6 +75,7 @@ function App() {
           <CaptionDisplay
             text={processedCaptions}
             translationMap={translationMap}
+            complexityMap={complexityMap}
             showComplexity={showComplexity}
           />
         </section>
