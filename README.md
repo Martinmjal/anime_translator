@@ -89,10 +89,13 @@
 - **Real-time Translation:** Uses Google Cloud API for accurate translations.
 - **Smart Complexity Analysis:**
     - <span style="color: #4ade80">**Green:**</span> Common words (Top 1000).
-    - <span style="color: #facc15">**Yellow:**</span> Less common words or abstract concepts.
-    - <span style="color: #ef4444">**Red:**</span> Rare words, long compounds, or complex syllables.
-    - **Ignored:** Function words (Articles, Prepositions, etc.) are automatically filtered to reduce noise.
-- **Known Words:** Click any word to mark it as "Known" and ignore it in future.
+    - <span style="color: #facc15">**Yellow:**</span> Less common words (Top 5000), abstract concepts, or medium length.
+    - <span style="color: #ef4444">**Red:**</span> Rare words, long compounds, or complex syllables (4+).
+    - **Ignored:** Function words (Articles, Prepositions, Pronouns, etc.) are automatically filtered using POS tagging to reduce visual noise.
+- **Smart "Known Words":** 
+    - Click any word to mark it as "Known".
+    - **Auto-Lemmatization:** The system automatically identifies the root form (e.g., *kommst* → *kommen*).
+    - **Universal Recognition:** Marking one form ignores all other conjugations/declensions of that word.
 - **Glassmorphism UI:** A premium, modern aesthetic.
 
 ## 📖 Usage
@@ -107,8 +110,10 @@
 
 To verify the API integration without the UI, run the included test script:
 
+To verify the backend logic, run the pytest suite:
+
 ```bash
-node test-api.mjs
+backend/venv/bin/pytest backend/test_main.py
 ```
 
 ## 📄 License

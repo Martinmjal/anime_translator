@@ -26,20 +26,26 @@ def test_function_words_ignored():
         assert results[word] == "ignored", f"Word '{word}' should be ignored but was {results[word]}"
 
 def test_known_words_flow():
-    # 1. Add a word
-    word = "Testwort"
+    # 1. Add a word (conjugated)
+    word = "spielst"
     response = client.post("/known-words", json={"word": word})
     assert response.status_code == 200
-    
-    # 2. Verify it's in the list
+    assert response.json()["word"] == "spielen" # Should return lemma
+
+    # 2. Verify it's in the list (as lemma)
     response = client.get("/known-words")
-    assert word.lower() in response.json()
-    
-    # 3. Verify complexity ignores it
-    response = client.post("/complexity", json={"words": [word]})
-    # Logic: if known, it returns "ignored" (or handled by frontend to not color)
+    assert response.status_code == 200
+    assert "spielen" in response.json()
+
+    # 3. Verify complexity ignores other forms
+    response = client.post("/complexity", json={"words": ["spielt", "spiele", "spielen", word]})
+    assert response.status_code == 200
+    results = response.json()
+    assert results["spielt"] == "ignored"
+    assert results["spiele"] == "ignored"
+    assert results["spielen"] == "ignored" # (or handled by frontend to not color)
     # My implementation returns "ignored" string
-    assert response.json()[word] == "ignored"
+    assert results[word] == "ignored"
 
 def test_translation_proxy_mock():
     # We can't easily test the real Google API without a key in this environment context if it's missing,
