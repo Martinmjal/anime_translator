@@ -11,9 +11,10 @@ function App() {
   const [translationMap, setTranslationMap] = useState({});
   const [targetLanguage, setTargetLanguage] = useState('en');
   const [showComplexity, setShowComplexity] = useState(false);
-  const [apiKey, setApiKey] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
   const handleProcess = async () => {
     if (!captions.trim()) return;
@@ -61,8 +62,6 @@ function App() {
             setTargetLanguage={setTargetLanguage}
             showComplexity={showComplexity}
             setShowComplexity={setShowComplexity}
-            apiKey={apiKey}
-            setApiKey={setApiKey}
           />
         </section>
 
