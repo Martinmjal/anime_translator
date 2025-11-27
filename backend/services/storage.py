@@ -18,7 +18,8 @@ def save_known_word(word: str):
     known_words.add(word)
     try:
         with open(KNOWN_WORDS_FILE, 'w') as f:
-            json.dump(list(known_words), f)
+            # Sort the list for consistent order and use indent for readability
+            json.dump(sorted(list(known_words)), f, indent=4)
     except Exception as e:
         raise Exception(f"Failed to save: {e}")
     return known_words
